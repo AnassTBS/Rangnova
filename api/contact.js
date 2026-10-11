@@ -1,11 +1,7 @@
-import { createHmac } from "node:crypto";
-import { isIP } from "node:net";
 import { Resend } from "resend";
 
 const REQUIRED_FIELDS = ["firstName", "lastName", "email", "consent"];
-const MAX_REQUEST_BYTES = 16 * 1024;
-const RATE_LIMIT_MAX_REQUESTS = 5;
-const RATE_LIMIT_WINDOW_SECONDS = 15 * 60;
+export const MAX_REQUEST_BYTES = 16 * 1024;
 const MAX_LENGTHS = {
   firstName: 100,
   lastName: 100,
@@ -61,65 +57,6 @@ const rejectOversizedRequest = (req, res) => {
 
 const isJsonContentType = (value) =>
   typeof value === "string" && /^application\/json(?:\s*;\s*charset=utf-8)?\s*$/i.test(value);
-
-// Configure both Upstash credentials server-side in Vercel; never skip the shared limiter.
-const checkRateLimit = async (ipAddress) => {
-  const redisUrl = process.env.UPSTASH_REDIS_REST_URL;
-  const redisToken = process.env.UPSTASH_REDIS_REST_TOKEN;
-  if (!redisUrl || !redisToken) {
-    throw new Error("Contact rate limiter is not configured.");
-  }
-
-  const endpoint = new URL(redisUrl);
-  if (
-    endpoint.protocol !== "https:" ||
-    endpoint.username ||
-    endpoint.password ||
-    endpoint.search ||
-    endpoint.hash ||
-    (endpoint.pathname !== "" && endpoint.pathname !== "/")
-  ) {
-    throw new Error("Contact rate limiter configuration is invalid.");
-  }
-
-  const ipHash = createHmac("sha256", redisToken).update(ipAddress).digest("hex");
-  const script = [
-    "local count = redis.call('INCR', KEYS[1])",
-    "if count == 1 then redis.call('EXPIRE', KEYS[1], ARGV[1]) end",
-    "return {count, redis.call('TTL', KEYS[1])}",
-  ].join("\n");
-  const response = await fetch(endpoint.origin, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${redisToken}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify([
-      "EVAL",
-      script,
-      "1",
-      `contact:v1:${ipHash}`,
-      String(RATE_LIMIT_WINDOW_SECONDS),
-    ]),
-    signal: AbortSignal.timeout(5000),
-  });
-
-  if (!response.ok) {
-    throw new Error(`Contact rate limiter request failed with status ${response.status}.`);
-  }
-
-  const result = await response.json();
-  if (result.error || !Array.isArray(result.result) || result.result.length !== 2) {
-    throw new Error("Contact rate limiter returned an invalid response.");
-  }
-
-  const [count, ttl] = result.result.map(Number);
-  if (!Number.isInteger(count) || !Number.isInteger(ttl) || ttl < 0) {
-    throw new Error("Contact rate limiter returned invalid limits.");
-  }
-
-  return { allowed: count <= RATE_LIMIT_MAX_REQUESTS, retryAfter: Math.max(ttl, 1) };
-};
 
 const buildEmailText = (payload) => {
   const lines = [
@@ -213,25 +150,6 @@ export default async function handler(req, res) {
     if (value.length > MAX_LENGTHS[key]) {
       return res.status(400).json({ success: false, error: `${key} is too long.` });
     }
-  }
-
-  const ipAddress = req.headers["x-real-ip"];
-  if (typeof ipAddress !== "string" || !isIP(ipAddress)) {
-    console.error("Contact submission rejected because a trusted client IP is unavailable.");
-    return res.status(503).json({ success: false, error: "Unable to process your inquiry right now. Please try again later." });
-  }
-
-  let rateLimit;
-  try {
-    rateLimit = await checkRateLimit(ipAddress);
-  } catch (error) {
-    console.error("Contact rate limiter failed", error);
-    return res.status(503).json({ success: false, error: "Unable to process your inquiry right now. Please try again later." });
-  }
-
-  if (!rateLimit.allowed) {
-    res.setHeader("Retry-After", String(rateLimit.retryAfter));
-    return res.status(429).json({ success: false, error: "Too many inquiries. Please try again later." });
   }
 
   const resend = new Resend(apiKey);

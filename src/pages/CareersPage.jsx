@@ -62,7 +62,7 @@ function CareersHero() {
             src="/images/about-team.webp"
             alt={t("Three colleagues collaborating in a bright workspace")}
             loading="eager"
-            fetchPriority="high"
+            fetchpriority="high"
             width={1029}
             height={768}
           />

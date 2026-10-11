@@ -159,7 +159,10 @@ function ContactForm() {
       ]);
 
       if (!response.ok || result.success !== true) {
-        if (isMountedRef.current) setSubmitError("We couldn’t send your inquiry right now. Please try again.");
+        const errorMessage = import.meta.env.DEV && typeof result.error === "string"
+          ? result.error
+          : "We couldn’t send your inquiry right now. Please try again.";
+        if (isMountedRef.current) setSubmitError(t(errorMessage));
         return;
       }
 

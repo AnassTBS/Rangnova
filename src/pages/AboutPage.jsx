@@ -43,7 +43,7 @@ export default function AboutPage() {
         title={<>{t("Better business starts")}<br />{t("with ")}<em>{t("being there.")}</em></>}
         description={t("We believe the conversations around your business deserve the same care and attention you put into building it.")}
         graphicClass="about-hero-photo-wrap"
-        graphic={<img className="about-hero-photo" src="/images/about-hero.webp" alt={t("A customer-support headset and workstation ready for a conversation")} loading="eager" fetchPriority="high" width={1152} height={768} />}
+        graphic={<img className="about-hero-photo" src="/images/about-hero.webp" alt={t("A customer-support headset and workstation ready for a conversation")} loading="eager" fetchpriority="high" width={1152} height={768} />}
       />
       <section className="about-story section-pad">
         <Reveal className="container about-story-grid">

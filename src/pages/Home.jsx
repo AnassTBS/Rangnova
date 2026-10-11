@@ -66,7 +66,7 @@ function HeroPhoto() {
         src="/images/home-hero.webp"
         alt={t("A smiling customer-support professional wearing a headset")}
         loading="eager"
-        fetchPriority="high"
+        fetchpriority="high"
         width={768}
         height={1299}
       />
