@@ -488,7 +488,7 @@ function ContactForm() {
           </p>
         )}
         <p className="form-privacy-note">
-          {t("Selecting Send Email sends your inquiry directly to ringnovasales@gmail.com. Our team will review it and get back to you.")}
+          {t("Selecting Send Email sends your inquiry directly to contact@rangnova.com. Our team will review it and get back to you.")}
         </p>
       </div>
     </form>
