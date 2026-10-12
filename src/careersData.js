@@ -55,7 +55,7 @@ export const proposedCareersContent = {
 };
 
 export const careersContacts = {
-  applicationEmail: "ringnovarecruitment@gmail.com",
+  applicationEmail: "contact@rangnova.com",
   whatsappNumber: "212605560310",
   // Role-specific applications remain closed until Ringnova approves their intake details.
   roleEmailApplicationsEnabled: false,
