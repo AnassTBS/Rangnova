@@ -829,17 +829,17 @@ function AnimatedRoutes() {
     if (metadata) {
       const title = metadata[0];
       const desc = metadata[1];
-      const pageUrl = `https://rangnova.com${path === "/" ? "/" : path}`;
+      const pageUrl = `https://www.rangnova.com${path === "/" ? "/" : path}`;
 
       setOrCreateMeta("og:title", title, true);
       setOrCreateMeta("og:description", desc, true);
       setOrCreateMeta("og:type", "website", true);
       setOrCreateMeta("og:url", pageUrl, true);
-      setOrCreateMeta("og:image", "https://rangnova.com/rangnova-mark.webp", true);
+      setOrCreateMeta("og:image", "https://www.rangnova.com/rangnova-mark.webp", true);
       setOrCreateMeta("twitter:title", title);
       setOrCreateMeta("twitter:description", desc);
       setOrCreateMeta("twitter:card", "summary_large_image");
-      setOrCreateMeta("twitter:image", "https://rangnova.com/rangnova-mark.webp");
+      setOrCreateMeta("twitter:image", "https://www.rangnova.com/rangnova-mark.webp");
 
       // Set canonical URL
       if (!canonicalLink) {

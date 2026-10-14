@@ -3,7 +3,7 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <!-- Home -->
   <url>
-    <loc>https://rangnova.com/</loc>
+    <loc>https://www.rangnova.com/</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
@@ -11,7 +11,7 @@
 
   <!-- Services -->
   <url>
-    <loc>https://rangnova.com/services</loc>
+    <loc>https://www.rangnova.com/services</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
@@ -19,7 +19,7 @@
 
   <!-- About -->
   <url>
-    <loc>https://rangnova.com/about</loc>
+    <loc>https://www.rangnova.com/about</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
@@ -27,7 +27,7 @@
 
   <!-- Contact -->
   <url>
-    <loc>https://rangnova.com/contact</loc>
+    <loc>https://www.rangnova.com/contact</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -35,7 +35,7 @@
 
   <!-- Privacy -->
   <url>
-    <loc>https://rangnova.com/privacy</loc>
+    <loc>https://www.rangnova.com/privacy</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -43,7 +43,7 @@
 
   <!-- Careers -->
   <url>
-    <loc>https://rangnova.com/careers</loc>
+    <loc>https://www.rangnova.com/careers</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

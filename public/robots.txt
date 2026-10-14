@@ -4,4 +4,4 @@ Allow: /
 Disallow: /admin
 Disallow: /api
 
-Sitemap: https://rangnova.com/sitemap.xml
+Sitemap: https://www.rangnova.com/sitemap.xml
