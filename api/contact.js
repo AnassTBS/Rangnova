@@ -78,7 +78,11 @@ const buildEmailText = (payload) => {
   return lines.join("\n");
 };
 
-export default async function handler(req, res) {
+export default async function handler(
+  req,
+  res,
+  { createResendClient = (apiKey) => new Resend(apiKey) } = {},
+) {
   if (req.method !== "POST") {
     return res.status(405).json({ success: false, error: "Method not allowed." });
   }
@@ -152,9 +156,8 @@ export default async function handler(req, res) {
     }
   }
 
-  const resend = new Resend(apiKey);
-
   try {
+    const resend = createResendClient(apiKey);
     const { error } = await resend.emails.send({
       from: contactFromEmail,
       to: [contactToEmail],
