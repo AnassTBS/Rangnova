@@ -58,20 +58,24 @@ test("generates initial route metadata for every configured public route", async
   }
 });
 
-test("routes generated public paths before the SPA fallback", async () => {
+test("routes only configured public paths and preserves clean-URL redirects", async () => {
   const vercelConfig = JSON.parse(
     await readFile(path.join(projectRoot, "vercel.json"), "utf8"),
   );
-  const rewrites = vercelConfig.rewrites;
-  const fallbackIndex = rewrites.findIndex(({ destination }) => destination === "/index.html");
+  const publicRoutes = ["/services", "/about", "/contact", "/careers", "/privacy"];
 
-  assert.notEqual(fallbackIndex, -1);
-  for (const route of ROUTES.filter((item) => item !== "/")) {
-    const routeIndex = rewrites.findIndex(({ source }) => source === route);
-    assert.notEqual(routeIndex, -1, `${route}: explicit rewrite missing`);
-    assert.ok(routeIndex < fallbackIndex, `${route}: rewrite must precede SPA fallback`);
-    assert.equal(rewrites[routeIndex].destination, `${route}/index.html`);
-  }
+  assert.deepEqual(vercelConfig.rewrites, publicRoutes
+    .map((route) => ({
+      source: route,
+      destination: `${route}/index.html`,
+    })));
+
+  assert.deepEqual(vercelConfig.redirects, publicRoutes
+    .map((route) => ({
+      source: `${route}/`,
+      destination: route,
+      permanent: true,
+    })));
 });
 
 function escapeRegExp(value) {
